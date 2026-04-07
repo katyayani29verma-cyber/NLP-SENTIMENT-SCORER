@@ -2,63 +2,48 @@
 #include "Dictionary.h"
 #include <cctype>
 
-// Implementation of WordCountScorer
-int WordCountScorer::calculateScore(
-    const vector<string> &words,
-    const unordered_map<string, int> &dict) {
-  int score = 0;
-
-  for (const auto &word : words) {
-    // Look up the word in the dictionary
-    auto it = dict.find(word);
-
-    // If the word exists in the dictionary
-    if (it != dict.end()) {
-      if (it->second > 0) {
-        // Word is positive, add 1
-        score++;
-      } else if (it->second < 0) {
-        // Word is negative, subtract 1
-        score--;
-      }
-    }
-  }
-
-  return score;
-}
-
-// Implementation of WeightedScorer
-int WeightedScorer::calculateScore(
-    const vector<string> &words,
-    const unordered_map<string, int> &dict) {
-  int score = 0;
-
-  // Iterate through the vector of words
-  for (const auto &word : words) {
-    // Look up the word in the dictionary
-    auto it = dict.find(word);
-
-    // If the word exists in the dictionary
-    if (it != dict.end()) {
-      // Add the exact integer weight directly to the score
-      score += it->second;
-    }
-  }
-
-  return score;
-}
-#include "Scorer.h"
-#include <cctype>
-
+// --------------------------------------------------
 // Clean word function
+// Removes punctuation and converts to lowercase
+// --------------------------------------------------
 string cleanWord(string word) {
     string cleaned = "";
+
     for (char c : word) {
-        if (isalpha(c)) cleaned += tolower(c);
+        if (isalpha(c)) {
+            cleaned += tolower(c);
+        }
     }
+
     return cleaned;
 }
 
+// --------------------------------------------------
+// WORD COUNT SCORER
+// +1 for positive, -1 for negative
+// --------------------------------------------------
+int WordCountScorer::calculateScore(vector<string>& words, Dictionary& dict) {
+    int score = 0;
+
+    for (string word : words) {
+        if (dict.exists(word)) {
+            if (dict.getScore(word) > 0)
+                score += 1;
+            else
+                score -= 1;
+        }
+    }
+
+    return score;
+}
+
+// --------------------------------------------------
+// ADVANCED SCORER
+// Includes:
+// - cleaning
+// - negation handling
+// - weighted scoring
+// --------------------------------------------------
 int AdvancedScorer::calculateScore(vector<string>& words, Dictionary& dict) {
     int score = 0;
 

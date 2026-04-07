@@ -31,7 +31,7 @@ vector<string> tokenize(string text) {
 int main() {
     try {
         // -------- READ INPUT FILE --------
-        ifstream file("../02_Input_Files/input.txt");
+        ifstream file("../Input_Files/input.txt");
 
         if (!file) {
             throw runtime_error("Input file not found!");
@@ -75,15 +75,15 @@ int main() {
         cout << "\nSentiment Score: " << score << endl;
 
         if (score > 3)
-            cout << "Strong Positive 🔥😊" << endl;
+            cout << "Strong Positive " << endl;
         else if (score > 0)
-            cout << "Positive 😊" << endl;
+            cout << "Positive " << endl;
         else if (score == 0)
-            cout << "Neutral 😐" << endl;
+            cout << "Neutral " << endl;
         else if (score < -3)
-            cout << "Strong Negative 😡" << endl;
+            cout << "Strong Negative " << endl;
         else
-            cout << "Negative 😞" << endl;
+            cout << "Negative " << endl;
 
         delete scorer;
     }
