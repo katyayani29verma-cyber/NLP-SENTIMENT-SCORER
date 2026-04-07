@@ -1,50 +1,31 @@
 #ifndef SCORER_H
 #define SCORER_H
 
-#include <string>
-#include <unordered_map>
 #include <vector>
+#include <string>
+#include "Dictionary.h"   // ✅ IMPORTANT
 
 using namespace std;
 
-// 1. ABSTRACTION
-// The Scorer class acts as an Abstract Base Class. It defines a generic
-// interface
-//"contract" without providing the specific implementation.
+// ---------------- BASE CLASS ----------------
 class Scorer {
 public:
-  // A virtual destructor is important for memory safety. It ensures that when
-  // you delete a derived class object through a base class pointer, the derived
-  // class's destructor gets called properly.
-  virtual ~Scorer() {}
+    // Pure virtual function
+    virtual int calculateScore(vector<string>& words, Dictionary& dict) = 0;
 
-  // Pure Virtual Function
-  // The "= 0" forces this function to be overridden by any derived class.
-  // It makes the Scorer class abstract, meaning you cannot instantiate a Scorer
-  // object directly.
-  virtual int
-  calculateScore(const vector<string> &words,
-                 const unordered_map<string, int> &dict) = 0;
+    virtual ~Scorer() {}
 };
 
-// 2. INHERITANCE
-// WordCountScorer inherits the Scorer base class.
-// It fulfills the contract set by Scorer.
+// ---------------- WORD COUNT SCORER ----------------
 class WordCountScorer : public Scorer {
 public:
-  // Overriding the pure virtual function from the base class
-  int calculateScore(const vector<string> &words,
-                     const unordered_map<string, int> &dict) override;
+    int calculateScore(vector<string>& words, Dictionary& dict);
 };
 
-// 2. INHERITANCE
-// WeightedScorer also inherits the Scorer base class, offering an alternative
-// scoring strategy.
-class WeightedScorer : public Scorer {
+// ---------------- ADVANCED SCORER ----------------
+class AdvancedScorer : public Scorer {
 public:
-  // Overriding the pure virtual function from the base class
-  int calculateScore(const vector<string> &words,
-                     const unordered_map<string, int> &dict) override;
+    int calculateScore(vector<string>& words, Dictionary& dict);
 };
 
 #endif

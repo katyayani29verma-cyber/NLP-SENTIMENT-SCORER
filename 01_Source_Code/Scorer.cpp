@@ -1,4 +1,6 @@
 #include "Scorer.h"
+#include "Dictionary.h"
+#include <cctype>
 
 // Implementation of WordCountScorer
 int WordCountScorer::calculateScore(
@@ -44,4 +46,42 @@ int WeightedScorer::calculateScore(
   }
 
   return score;
+}
+#include "Scorer.h"
+#include <cctype>
+
+// Clean word function
+string cleanWord(string word) {
+    string cleaned = "";
+    for (char c : word) {
+        if (isalpha(c)) cleaned += tolower(c);
+    }
+    return cleaned;
+}
+
+int AdvancedScorer::calculateScore(vector<string>& words, Dictionary& dict) {
+    int score = 0;
+
+    for (int i = 0; i < words.size(); i++) {
+        string word = cleanWord(words[i]);
+
+        if (word.empty()) continue;
+
+        // NOT handling
+        if (word == "not" && i + 1 < words.size()) {
+            string next = cleanWord(words[i + 1]);
+
+            if (dict.exists(next)) {
+                score -= dict.getScore(next);
+                i++;
+                continue;
+            }
+        }
+
+        if (dict.exists(word)) {
+            score += dict.getScore(word);
+        }
+    }
+
+    return score;
 }

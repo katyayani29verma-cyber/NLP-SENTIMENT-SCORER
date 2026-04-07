@@ -3,10 +3,9 @@
 #include <sstream>
 #include <vector>
 #include <stdexcept>
-
+#include "Scorer.h"
 #include "Buffer.h"
 #include "Dictionary.h"
-#include "Scorer.h"
 
 using namespace std;
 
