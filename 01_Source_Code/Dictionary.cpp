@@ -1,10 +1,12 @@
 #include "Dictionary.h"
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <cctype>
 
-// -------- LOWERCASE FUNCTION --------
+// --------------------------------------------------
+// Convert word to lowercase
+// Ensures case-insensitive matching (GOOD == good)
+// --------------------------------------------------
 string Dictionary::toLower(string word) {
     for (char &c : word) {
         c = tolower(c);
@@ -12,11 +14,14 @@ string Dictionary::toLower(string word) {
     return word;
 }
 
-// -------- CONSTRUCTOR --------
+// --------------------------------------------------
+// Constructor
+// - Loads default dictionary (fallback)
+// - Used if no external file is provided
+// --------------------------------------------------
 Dictionary::Dictionary() {
-    // Fallback dictionary (in case file not used)
 
-    // Positive
+    // -------- POSITIVE WORDS --------
     dict["good"] = 2;
     dict["great"] = 3;
     dict["amazing"] = 5;
@@ -34,7 +39,7 @@ Dictionary::Dictionary() {
     dict["impressive"] = 4;
     dict["outstanding"] = 5;
 
-    // Negative
+    // -------- NEGATIVE WORDS --------
     dict["bad"] = -2;
     dict["terrible"] = -5;
     dict["awful"] = -5;
@@ -56,32 +61,45 @@ Dictionary::Dictionary() {
     dict["pathetic"] = -5;
 }
 
-// -------- LOAD FROM FILE --------
+// --------------------------------------------------
+// Load dictionary from external file
+// File format example:
+// good 2
+// bad -2
+// --------------------------------------------------
 void Dictionary::loadFromFile(string filename) {
     ifstream file(filename);
 
+    // If file not found → use default dictionary
     if (!file) {
-        cout << "Dictionary file not found. Using default.\n";
+        cout << "Dictionary file not found. Using default dictionary.\n";
         return;
     }
 
     string word;
     int score;
 
+    // Read word-score pairs from file
     while (file >> word >> score) {
-        word = toLower(word);
-        dict[word] = score;
+        word = toLower(word);   // normalize word
+        dict[word] = score;     // store in map
     }
 }
 
-// -------- CHECK WORD --------
+// --------------------------------------------------
+// Check if word exists in dictionary
+// Returns true (1) or false (0)
+// --------------------------------------------------
 bool Dictionary::exists(string word) {
-    word = toLower(word);
-    return dict.count(word);
+    word = toLower(word);       // normalize input
+    return dict.count(word);    // fast lookup
 }
 
-// -------- GET SCORE --------
+// --------------------------------------------------
+// Get sentiment score of a word
+// Assumes word exists before calling
+// --------------------------------------------------
 int Dictionary::getScore(string word) {
-    word = toLower(word);
-    return dict[word];
+    word = toLower(word);       // normalize input
+    return dict[word];          // return score
 }

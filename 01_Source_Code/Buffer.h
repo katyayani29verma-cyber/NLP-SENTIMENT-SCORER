@@ -4,12 +4,24 @@
 #include <string>
 using namespace std;
 
+// --------------------------------------------------
+// Buffer Class
+// Purpose:
+// - Stores text using Dynamic Memory Allocation (DMA)
+// - Demonstrates move semantics
+// --------------------------------------------------
 class Buffer {
-    char* data;
+    char* data;   // pointer to dynamically allocated memory
 
 public:
-    Buffer(string&& text);   // move semantics
+    // Constructor using move semantics
+    // Takes rvalue string to avoid unnecessary copying
+    Buffer(string&& text);
+
+    // Returns stored data
     char* getData();
+
+    // Destructor to free memory
     ~Buffer();
 };
 
