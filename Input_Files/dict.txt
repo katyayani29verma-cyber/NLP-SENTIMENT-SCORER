@@ -1,0 +1,5 @@
+amazing 5
+bad -2
+good 2
+terrible -5
+awesome 4
