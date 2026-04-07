@@ -2,8 +2,8 @@
 
 // Implementation of WordCountScorer
 int WordCountScorer::calculateScore(
-    const std::vector<std::string> &words,
-    const std::unordered_map<std::string, int> &dict) {
+    const vector<string> &words,
+    const unordered_map<string, int> &dict) {
   int score = 0;
 
   for (const auto &word : words) {
@@ -27,8 +27,8 @@ int WordCountScorer::calculateScore(
 
 // Implementation of WeightedScorer
 int WeightedScorer::calculateScore(
-    const std::vector<std::string> &words,
-    const std::unordered_map<std::string, int> &dict) {
+    const vector<string> &words,
+    const unordered_map<string, int> &dict) {
   int score = 0;
 
   // Iterate through the vector of words

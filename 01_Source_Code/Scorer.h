@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
+using namespace std;
+
 // 1. ABSTRACTION
 // The Scorer class acts as an Abstract Base Class. It defines a generic
 // interface
@@ -21,8 +23,8 @@ public:
   // It makes the Scorer class abstract, meaning you cannot instantiate a Scorer
   // object directly.
   virtual int
-  calculateScore(const std::vector<std::string> &words,
-                 const std::unordered_map<std::string, int> &dict) = 0;
+  calculateScore(const vector<string> &words,
+                 const unordered_map<string, int> &dict) = 0;
 };
 
 // 2. INHERITANCE
@@ -31,8 +33,8 @@ public:
 class WordCountScorer : public Scorer {
 public:
   // Overriding the pure virtual function from the base class
-  int calculateScore(const std::vector<std::string> &words,
-                     const std::unordered_map<std::string, int> &dict) override;
+  int calculateScore(const vector<string> &words,
+                     const unordered_map<string, int> &dict) override;
 };
 
 // 2. INHERITANCE
@@ -41,8 +43,8 @@ public:
 class WeightedScorer : public Scorer {
 public:
   // Overriding the pure virtual function from the base class
-  int calculateScore(const std::vector<std::string> &words,
-                     const std::unordered_map<std::string, int> &dict) override;
+  int calculateScore(const vector<string> &words,
+                     const unordered_map<string, int> &dict) override;
 };
 
 #endif
