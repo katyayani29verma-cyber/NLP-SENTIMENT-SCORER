@@ -1,47 +1,96 @@
-#include "Scorer.h"
 #include <iostream>
-#include <string>
-#include <unordered_map>
+#include <fstream>
+#include <sstream>
 #include <vector>
+#include <stdexcept>
+
+#include "Buffer.h"
+#include "Dictionary.h"
+#include "Scorer.h"
 
 using namespace std;
 
+// --------------------------------------------------
+// Tokenization Function
+// Converts text into words
+// --------------------------------------------------
+vector<string> tokenize(string text) {
+    vector<string> words;
+    stringstream ss(text);
+    string word;
+
+    while (ss >> word) {
+        words.push_back(word);
+    }
+
+    return words;
+}
+
+// --------------------------------------------------
+// MAIN FUNCTION
+// --------------------------------------------------
 int main() {
-  // 1. Setup mock data to test the integration
-  unordered_map<string, int> dict = {
-      {"good", 2}, {"spectacular", 3}, {"bad", -2}, {"terrible", -5}};
-  vector<string> words = {"the",      "service", "was",        "good",
-                          "but",      "the",     "food",       "was",
-                          "terrible", "and",     "spectacular"};
-  // 2. USER INPUT & CONFIGURATION
-  int choice;
-  cout << "Select Scoring Method:\n1: Word Count (+1/-1)\n2: Weighted "
-          "(+weight/-weight)\nChoice: ";
-  cin >> choice;
+    try {
+        // -------- READ INPUT FILE --------
+        ifstream file("../02_Input_Files/input.txt");
 
-  // 3. POLYMORPHISM
-  // We declare a Base Class Pointer and can point to any object derived from
-  // Scorer
-  Scorer *activeScorer = nullptr;
+        if (!file) {
+            throw runtime_error("Input file not found!");
+        }
 
-  // We instantiate the specific derived class dynamically at runtime based on
-  // user input
-  if (choice == 1) {
-    activeScorer = new WordCountScorer();
-  } else {
-    activeScorer = new WeightedScorer();
-  }
+        // Read full file into string
+        stringstream bufferStream;
+        bufferStream << file.rdbuf();
+        string text = bufferStream.str();
 
-  // Dynamic Dispatch: The 'virtual' keyword ensures the correct implementation
-  // is resolved at runtime based on the underlying object type.
-  int finalScore = activeScorer->calculateScore(words, dict);
+        if (text.empty()) {
+            throw runtime_error("Input file is empty!");
+        }
 
-  cout << "\nFinal Sentiment Score: " << finalScore << endl;
+        // -------- BUFFER (Person 2) --------
+        Buffer buffer(move(text));
 
-  // Memory safety cleanup:
-  // Deleting the base class pointer triggers the virtual destructor,
-  // ensuring no memory leaks occur from derived class objects.
-  delete activeScorer;
+        // -------- TOKENIZE --------
+        vector<string> words = tokenize(buffer.getData());
 
-  return 0;
+        // -------- DICTIONARY (Person 2) --------
+        Dictionary dict;
+        dict.loadFromFile("../02_Input_Files/dict.txt"); // optional
+
+        // -------- SCORER (Person 1) --------
+        int choice;
+        cout << "Select Scoring Method:\n1. Word Count\n2. Advanced\nChoice: ";
+        cin >> choice;
+
+        Scorer* scorer = nullptr;
+
+        if (choice == 1)
+            scorer = new WordCountScorer();
+        else
+            scorer = new AdvancedScorer();
+
+        // -------- CALCULATE SCORE --------
+        int score = scorer->calculateScore(words, dict);
+
+        // -------- OUTPUT --------
+        cout << "\nSentiment Score: " << score << endl;
+
+        if (score > 3)
+            cout << "Strong Positive 🔥😊" << endl;
+        else if (score > 0)
+            cout << "Positive 😊" << endl;
+        else if (score == 0)
+            cout << "Neutral 😐" << endl;
+        else if (score < -3)
+            cout << "Strong Negative 😡" << endl;
+        else
+            cout << "Negative 😞" << endl;
+
+        delete scorer;
+    }
+    catch (exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+
+    return 0;
 }
