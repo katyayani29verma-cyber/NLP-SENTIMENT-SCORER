@@ -1,0 +1,174 @@
+NLP SENTIMENT SCORER
+Execution Report
+
+==================================================
+
+TEST CASE 1: Strong Positive (Advanced)
+
+Input:
+This movie is amazing and awesome
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: 9
+Result: Strong Positive
+
+Explanation:
+amazing → +5
+awesome → +4
+Final Score = 9
+
+==================================================
+
+TEST CASE 2: Strong Negative (Advanced)
+
+Input:
+This movie is terrible and bad
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: -7
+Result: Strong Negative
+
+Explanation:
+terrible → -5
+bad → -2
+Final Score = -7
+
+==================================================
+
+TEST CASE 3: Negation Handling
+
+Input:
+This movie is not bad
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: 2
+Result: Positive
+
+Explanation:
+bad → -2
+not bad → +2
+Final Score = +2
+
+==================================================
+
+TEST CASE 4: Mixed Sentiment
+
+Input:
+The movie was amazing but the ending was bad
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: 3
+Result: Positive
+
+Explanation:
+amazing → +5
+bad → -2
+Final Score = +3
+
+==================================================
+
+TEST CASE 5: Neutral Case
+
+Input:
+The movie was average and okay
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: 0
+Result: Neutral
+
+Explanation:
+No strong sentiment words found
+Final Score = 0
+
+==================================================
+
+TEST CASE 6: Comparison (Word Count vs Advanced)
+
+Input:
+This movie is amazing but bad
+
+Scoring Method:
+Word Count (Choice: 1)
+
+Output:
+Sentiment Score: 0
+Result: Neutral
+
+Explanation:
+amazing → +1
+bad → -1
+Final Score = 0
+
+--------------------------------------------------
+
+Same Input:
+This movie is amazing but bad
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: 3
+Result: Positive
+
+Explanation:
+amazing → +5
+bad → -2
+Final Score = +3
+
+==================================================
+
+TEST CASE 7: Negation Edge Case
+
+Input:
+The movie is not amazing
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: -5
+Result: Strong Negative
+
+Explanation:
+amazing → +5
+not amazing → -5
+
+==================================================
+
+TEST CASE 8: Realistic Sentence
+
+Input:
+The acting was good but the story was terrible and boring
+
+Scoring Method:
+Advanced (Choice: 2)
+
+Output:
+Sentiment Score: -6
+Result: Strong Negative
+
+Explanation:
+good → +2
+terrible → -5
+boring → -3
+Final Score = -6
+
+==================================================
+
+END OF REPORT
